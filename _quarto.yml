@@ -79,7 +79,7 @@ format:
     toc-expand: 2
 comments:
   giscus:
-    repo: Arcadia-Science/glass-box-umap
+    repo: Arcadia-Science/glass-box-umap-notebook-pub
     input-position: top
 reference-location: margin
 bibliography: ref.bib
