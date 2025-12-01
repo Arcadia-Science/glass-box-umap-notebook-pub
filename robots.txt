@@ -1,1 +1,1 @@
-Sitemap: https://Arcadia-Science.github.io/glass-box-umap/sitemap.xml
+Sitemap: https://Arcadia-Science.github.io/glass-box-umap-notebook-pub/sitemap.xml

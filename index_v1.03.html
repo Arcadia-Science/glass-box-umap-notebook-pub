@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -96,7 +96,7 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-0efc9ca32613c735a474efe03a7559eb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -501,13 +501,13 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 <!-- version-in-title.html -->
 <meta property="og:title" content="From black box to glass box: Making UMAP interpretable with exact feature contributions –">
 <meta property="og:description" content="">
-<meta property="og:image" content="https://Arcadia-Science.github.io/glass-box-umap/index_v1.03_files/figure-html/fig-top-gene-features-by-type-all-output-1.png">
+<meta property="og:image" content="https://Arcadia-Science.github.io/glass-box-umap-notebook-pub/index_v1.03_files/figure-html/fig-top-gene-features-by-type-all-output-1.png">
 <meta property="og:image:alt" content="Scatter plot of the UMAP embedding with the class Reticulocyte highlighted, with the top gene features overlaid as vectors.">
 <meta property="og:image:height" content="734">
 <meta property="og:image:width" content="1021">
 <meta name="twitter:title" content="From black box to glass box: Making UMAP interpretable with exact feature contributions –">
 <meta name="twitter:description" content="">
-<meta name="twitter:image" content="https://Arcadia-Science.github.io/glass-box-umap/index_v1.03_files/figure-html/fig-top-gene-features-by-type-all-output-1.png">
+<meta name="twitter:image" content="https://Arcadia-Science.github.io/glass-box-umap-notebook-pub/index_v1.03_files/figure-html/fig-top-gene-features-by-type-all-output-1.png">
 <meta name="twitter:image:alt" content="Scatter plot of the UMAP embedding with the class Reticulocyte highlighted, with the top gene features overlaid as vectors.">
 <meta name="twitter:image-height" content="734">
 <meta name="twitter:image-width" content="1021">
@@ -843,7 +843,11 @@ window.Quarto = {
     <ul class="dropdown-menu" aria-labelledby="nav-menu-iconify-qlementine-iconsversion-control-16-">    
         <li>
     <a class="dropdown-item" href="./index.html">
- <span class="dropdown-text">v1.08 (latest)</span></a>
+ <span class="dropdown-text">v1.09 (latest)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./index_v1.08.html">
+ <span class="dropdown-text">v1.08</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./index_v1.07.html">
@@ -905,7 +909,7 @@ window.Quarto = {
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
     <a href="https://twitter.com/arcadiascience" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-twitter-x"></i></a>
-    <a href="https://github.com/Arcadia-Science/glass-box-umap" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://github.com/Arcadia-Science/glass-box-umap-notebook-pub" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -2396,7 +2400,7 @@ Figure&nbsp;1: The conventional ScanPy (v1.11.4) UMAP and the PyTorch (v2.9.0) n
 <div aria-describedby="fig-reconstruction-validation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-reconstruction-validation" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-reconstruction-validation-1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent.">
+<div id="fig-reconstruction-validation-1" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent." data-fig-align="center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-reconstruction-validation-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="index_v1.03_files/figure-html/fig-reconstruction-validation-output-1.png" class="quarto-figure quarto-figure-center figure-img" data-ref-parent="fig-reconstruction-validation" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent." width="379" height="365">
@@ -2408,7 +2412,7 @@ Figure&nbsp;1: The conventional ScanPy (v1.11.4) UMAP and the PyTorch (v2.9.0) n
 </div>
 </div>
 <div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-reconstruction-validation" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-reconstruction-validation-2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14.">
+<div id="fig-reconstruction-validation-2" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14." data-fig-align="center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-reconstruction-validation-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="index_v1.03_files/figure-html/fig-reconstruction-validation-output-2.png" class="quarto-figure quarto-figure-center figure-img" data-ref-parent="fig-reconstruction-validation" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14." width="369" height="364">
@@ -3072,7 +3076,7 @@ York R, Mets DG. (2025). G–<span>P</span> <span>Atlas</span>: A neural network
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/Arcadia-Science\.github\.io\/glass-box-umap\/");
+        var filterRegex = new RegExp("https:\/\/Arcadia-Science\.github\.io\/glass-box-umap-notebook-pub\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -3451,7 +3455,7 @@ York R, Mets DG. (2025). G–<span>P</span> <span>Atlas</span>: A neural network
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";
     script.async = true;
-    script.dataset.repo = "Arcadia-Science/glass-box-umap";
+    script.dataset.repo = "Arcadia-Science/glass-box-umap-notebook-pub";
     script.dataset.repoId = "R_kgDOPS0dmQ";
     script.dataset.category = "General";
     script.dataset.categoryId = "DIC_kwDOPS0dmc4CxL-I";
