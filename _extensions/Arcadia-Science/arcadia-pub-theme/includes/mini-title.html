@@ -23,7 +23,7 @@
     // Github Pages sites are served from a path like `https://arcadia-science.github.io/<repo>/`
     // so we need to add the repo name to the path when we're on Github Pages.
     const siteRoot = (window.location.hostname.endsWith('github.io')) ? `/${window.location.pathname.split('/')[1]}` : '';
-    const themeAssets = `${siteRoot}/site_libs/quarto-contrib/quarto-project/arcadia-science/arcadia-pub-theme/assets`;
+    const themeAssets = `${siteRoot}/site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/assets`;
     template.content.querySelector('.logo-white').src = `${themeAssets}/logo_white.png`;
 
     let prevRatio = {appear: 1, disappear: 1};
