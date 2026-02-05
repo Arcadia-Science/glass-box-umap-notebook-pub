@@ -6,13 +6,12 @@ project:
   - 'examples/*.ipynb'
   - 'pages/*.qmd'
   resources:
-  - assets/*
   - authors.yml
   - CITATION.cff
 execute:
   freeze: auto
 website:
-  favicon: "assets/logo_white.png"
+  favicon: "_extensions/Arcadia-Science/arcadia-pub-theme/assets/logo_white.png"
   twitter-card: true
   open-graph: true
   navbar:
@@ -40,14 +39,14 @@ website:
       href: https://twitter.com/arcadiascience
     - icon: github
       href: https://github.com/{{< var pub.org >}}/{{< var pub.repo >}}
-    logo: assets/logo_text.png
+    logo: "_extensions/Arcadia-Science/arcadia-pub-theme/assets/logo_text.png"
     logo-href: https://research.arcadiascience.com/
     background: white
     search: true
   page-footer:
     background: '#484B50'
     border: false
-    left: '[![](/assets/logo_white.png){fig-alt="Arcadia-Science" width=65px}](https://www.arcadiascience.com/)
+    left: '[![](/_extensions/Arcadia-Science/arcadia-pub-theme/assets/logo_white.png){fig-alt="Arcadia-Science" width=65px}](https://www.arcadiascience.com/)
 
       Copyright 2025, Arcadia Science
 
@@ -62,32 +61,21 @@ website:
     type: implied
     style: simple
 format:
-  html:
+  Arcadia-Science/arcadia-pub-theme-html:
     html-math-method: katex
-    include-in-header:
-    - file: assets/logo-animation.html
-    - file: assets/author-reveal.html
-    - file: assets/mini-title.html
-    - file: assets/version-in-title.html
-    - file: assets/citation-box.html
-    css: 
-    - assets/css/main.css
-    - assets/css/citation-box.css
-    page-layout: article
-    title-block-banner: true
-    toc: true
-    toc-expand: 2
+shortcodes:
+- _extensions/mcanouil/iconify/iconify.lua
 comments:
   giscus:
     repo: Arcadia-Science/glass-box-umap-notebook-pub
     input-position: top
 reference-location: margin
 bibliography: ref.bib
-csl: assets/arcadia.csl
+csl: "_extensions/Arcadia-Science/arcadia-pub-theme/assets/arcadia.csl"
 code-annotations: hover
 html-table-processing: none
 demo-title: A brief syntax demo
 
 filters:
-- abstract-section
-- collapse-output
+- _extensions/pandoc-ext/abstract-section/abstract-section.lua
+- _extensions/mcanouil/collapse-output/collapse-output.lua

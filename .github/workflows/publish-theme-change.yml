@@ -1,0 +1,12 @@
+name: Publish Theme Change
+
+on:
+  push:
+    branches: [main]
+    paths: ['_extensions/**']
+  workflow_dispatch:
+
+jobs:
+  publish:
+    uses: Arcadia-Science/notebook-pub-theme/.github/workflows/publish-theme-change.yml@main
+    secrets: inherit

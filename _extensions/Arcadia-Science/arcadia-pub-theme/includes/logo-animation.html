@@ -1,4 +1,6 @@
 <!-- logo-animation.html -->
+<!-- Hidden preload to ensure Quarto copies the video asset -->
+<link rel="preload" href="/_extensions/arcadia-science/arcadia-pub-theme/assets/logo_movie.mp4" as="video" type="video/mp4">
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const brandLink = document.querySelector(".navbar-brand");
@@ -15,7 +17,8 @@
     // Github Pages sites are served from a path like `https://arcadia-science.github.io/<repo>/`
     // so we need to add the repo name to the path when we're on Github Pages.
     const siteRoot = (window.location.hostname.endsWith('github.io')) ? `/${window.location.pathname.split('/')[1]}` : '';
-    source.src = `${siteRoot}/assets/logo_movie.mp4`;
+    const themeAssets = `${siteRoot}/site_libs/quarto-contrib/quarto-project/arcadia-science/arcadia-pub-theme/assets`;
+    source.src = `${themeAssets}/logo_movie.mp4`;
     source.type = "video/mp4";
     video.appendChild(source);
 

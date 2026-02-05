@@ -1,0 +1,11 @@
+name: Check Theme Updates
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  check:
+    uses: Arcadia-Science/notebook-pub-theme/.github/workflows/check-theme-updates.yml@main
+    secrets: inherit

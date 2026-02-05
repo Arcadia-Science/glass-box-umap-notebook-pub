@@ -11,7 +11,7 @@ The publishing workflow described in the [Publishing Guide](PUBLISHING_GUIDE.md)
     This workflow creates the publication artifacts by aggregating all tagged versions of the `index.ipynb` notebook.
 
 2. **A publishing workflow** (`.github/workflows/publish.yml`)
-    
+
     This workflow renders the Quarto site from the publication artifacts and publishes the site to GitHub Pages.
 
 ## The version aggregation problem
@@ -51,3 +51,15 @@ The full development and publication process is described briefly below to help 
 
 4. **Publishing the publication**: When the author merges the build PR into `publish`, the `publish` workflow is triggered. It renders all of the versions and deploys the Quarto site to GitHub Pages.
 
+## Theme updates
+
+In addition to the content release workflows above, this repo has two workflows for automated theme updates:
+
+1. **check-theme-updates.yml** — Checks daily for new theme releases and opens a PR if an update is available.
+
+2. **publish-theme-change.yml** — When a theme update PR is merged, syncs the theme to `publish` and re-renders the site.
+
+These are thin wrappers that delegate to reusable workflows in the [notebook-pub-theme](https://github.com/Arcadia-Science/notebook-pub-theme) repo. See [GITHUB_ACTIONS.md](https://github.com/Arcadia-Science/notebook-pub-theme/blob/main/GITHUB_ACTIONS.md) in that repo for details.
+
+> [!NOTE]
+> If a content release PR is merged to `publish` and a theme update PR is merged to `main` within a short time window, both `publish.yml` and `publish-theme-change.yml` will run `quarto publish gh-pages` concurrently. This could cause one of the git pushes to `gh-pages` to fail with a non-fast-forward error. If this happens, the failed workflow can be re-run manually. This behavior has not been observed, but is a theoretical concern.

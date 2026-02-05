@@ -95,7 +95,3 @@
 
   --arcadia-logo-size: 2rem;
 }
-
-.MathJax, .MathJax_Display, mjx-container, mjx-math {
-    font-size: 110% !important;
-}

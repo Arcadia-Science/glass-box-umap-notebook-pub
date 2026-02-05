@@ -29,3 +29,7 @@ execute:
 .PHONY: preview
 preview:
 	quarto preview
+
+.PHONY: update-theme
+update-theme:
+	quarto update extension Arcadia-Science/notebook-pub-theme --no-prompt
