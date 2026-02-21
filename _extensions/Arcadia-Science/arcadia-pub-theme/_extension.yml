@@ -1,6 +1,6 @@
 title: Arcadia Pub Theme
 author: Arcadia Science
-version: 1.0.6
+version: 1.1.0
 quarto-required: ">=1.4.0"
 contributes:
   formats:
@@ -9,11 +9,13 @@ contributes:
         - css/main.css
         - css/citation-box.css
       include-in-header:
+        - file: includes/fonts.html
         - file: includes/logo-animation.html
         - file: includes/author-reveal.html
         - file: includes/mini-title.html
         - file: includes/version-in-title.html
         - file: includes/citation-box.html
+      highlight-style: arcadia-light.theme
       page-layout: article
       title-block-banner: true
       toc: true

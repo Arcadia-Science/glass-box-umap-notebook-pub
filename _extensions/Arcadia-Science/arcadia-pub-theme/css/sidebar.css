@@ -12,9 +12,15 @@ body.mini-title-visible.navbar-visible #quarto-margin-sidebar {
 }
 
 #toc-title {
-  font-family: var(--nb-header-font-family);
+  font-family: var(--nb-font-mono);
   font-size: var(--nb-toc-title-font-size);
-  font-weight: 150;
+  font-weight: 300;
+}
+
+.sidebar nav[role=doc-toc] ul>li>a,
+.sidebar nav[role=doc-toc] ul>li>ul>li>a {
+    font-family: var(--nb-font-mono);
+    font-weight: 300;
 }
 
 .sidebar nav[role=doc-toc] ul>li>a.active, .sidebar nav[role=doc-toc] ul>li>ul>li>a.active {
@@ -25,10 +31,10 @@ body.mini-title-visible.navbar-visible #quarto-margin-sidebar {
 
 .sidebar nav[role=doc-toc] ul>li>a:hover,
 .sidebar nav[role=doc-toc] ul>li>ul>li>a:hover {
-    border-left: 2px solid var(--arcadia-forest);
-    color: var(--arcadia-forest) !important;
-    opacity: 0.8;  /* Makes it slightly faded */
-    transition: all 0.2s ease;  /* Smooth transition */
+    border-left: 2px solid var(--arcadia-link-color);
+    color: var(--arcadia-link-color) !important;
+    opacity: 0.8;
+    transition: all 0.2s ease;
 }
 
 /* match striped table off-color with code background color */
