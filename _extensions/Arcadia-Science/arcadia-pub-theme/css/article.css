@@ -1,20 +1,20 @@
-h1, h2 {
-    font-family: var(--nb-header-font-family) !important;
-    font-weight: var(--nb-header-font-weight) !important;
-    color: #262626;
-}
-
-h3 {
-    font-family: var(--nb-main-text-font-family) !important;
+h1 {
+    font-family: var(--nb-font-serif) !important;
     font-weight: 400 !important;
+    color: var(--arcadia-black);
+    font-size: var(--nb-h1-font-size);
 }
 
 h2 {
+    font-family: var(--nb-font-sans) !important;
+    font-weight: 700 !important;
+    color: var(--arcadia-black);
     font-size: var(--nb-h2-font-size);
 }
 
-h1 {
-    font-size: var(--nb-h1-font-size);
+h3 {
+    font-family: var(--nb-font-sans) !important;
+    font-weight: 400 !important;
 }
 
 #quarto-appendix.default .quarto-appendix-heading {
@@ -31,6 +31,7 @@ h1 {
 
 .csl-entry {
     margin: 1rem;
+    font-family: var(--nb-font-sans);
 }
 
 .quarto-figure-center>figure>p {
@@ -38,14 +39,27 @@ h1 {
 }
 
 body {
-    font-family: var(--nb-main-text-font-family);
-    color: #262626;
+    font-family: var(--nb-font-sans);
+    color: var(--arcadia-body-color);
 }
-
+.tooltip-inner {
+    font-family: var(--nb-font-sans) !important;
+}
 /* Defines code background */
 .code-annotation-gutter, .code-annotation-gutter-bg {
     background-color: var(--bs-code-bg-color) !important;
 }
+figcaption, .figure-caption {
+    font-family: var(--nb-font-sans);
+    font-weight: 400;
+    color: var(--arcadia-muted-color);
+}
+
+code, pre, .sourceCode {
+    font-family: var(--nb-font-mono);
+    font-weight: 300;
+}
+
 div.sourceCode {
     background-color: var(--bs-code-bg-color) !important;
     border-radius: 4px;
