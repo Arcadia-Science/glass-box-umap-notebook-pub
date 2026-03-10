@@ -56,7 +56,7 @@ footer.footer .nav-footer, #quarto-header>nav {
 .menu-text {
     position: relative;
     display: inline-block;
-    font-family: var(--nb-header-font-family);
+    font-family: var(--nb-font-sans);
     max-width: 40vw;
 }
 

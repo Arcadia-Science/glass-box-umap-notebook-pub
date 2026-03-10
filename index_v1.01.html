@@ -86,7 +86,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./assets/logo_white.png" rel="icon" type="image/png">
+<link href="site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/assets/logo_white.png" rel="icon" type="image/png">
 <script src="site_libs/cookie-consent/cookie-consent.js"></script>
 <link href="site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
@@ -96,10 +96,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b8940f738eae8fa580d9c100a0a94d8e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-0efc9ca32613c735a474efe03a7559eb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-21455bcc0e9392bc2a430084fbe74653.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -164,7 +164,12 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 </script>
 <script type="module">import "https://cdn.plot.ly/plotly-3.1.1.min"</script>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&amp;family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&amp;family=Chivo+Mono:ital,wght@0,100..900;1,100..900&amp;display=swap">
 <!-- logo-animation.html -->
+<!-- Hidden preload to ensure Quarto copies the video asset -->
+<link rel="preload" href="site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/assets/logo_movie.mp4" as="video" type="video/mp4">
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const brandLink = document.querySelector(".navbar-brand");
@@ -181,7 +186,8 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
     // Github Pages sites are served from a path like `https://arcadia-science.github.io/<repo>/`
     // so we need to add the repo name to the path when we're on Github Pages.
     const siteRoot = (window.location.hostname.endsWith('github.io')) ? `/${window.location.pathname.split('/')[1]}` : '';
-    source.src = `${siteRoot}/assets/logo_movie.mp4`;
+    const themeAssets = `${siteRoot}/site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/assets`;
+    source.src = `${themeAssets}/logo_movie.mp4`;
     source.type = "video/mp4";
     video.appendChild(source);
 
@@ -372,7 +378,7 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
     <div class="mini-title-content">
       <div class="mini-title-logo-wrapper">
         <a href="https://research.arcadiascience.com/">
-          <img class="logo-white" src="/assets/logo_white.png" alt="Logo">
+          <img class="logo-white" src="" alt="Logo">
         </a>
       </div>
       <p></p>
@@ -392,7 +398,8 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
     // Github Pages sites are served from a path like `https://arcadia-science.github.io/<repo>/`
     // so we need to add the repo name to the path when we're on Github Pages.
     const siteRoot = (window.location.hostname.endsWith('github.io')) ? `/${window.location.pathname.split('/')[1]}` : '';
-    template.content.querySelector('.logo-white').src = `${siteRoot}/assets/logo_white.png`;
+    const themeAssets = `${siteRoot}/site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/assets`;
+    template.content.querySelector('.logo-white').src = `${themeAssets}/logo_white.png`;
 
     let prevRatio = {appear: 1, disappear: 1};
 
@@ -814,8 +821,8 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="assets/css/main.css">
-<link rel="stylesheet" href="assets/css/citation-box.css">
+<link rel="stylesheet" href="site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/css/main.css">
+<link rel="stylesheet" href="site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/css/citation-box.css">
 
 
 
@@ -826,8 +833,8 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="https://research.arcadiascience.com/" class="navbar-brand navbar-brand-logo">
-    <img src="./assets/logo_text.png" alt="" class="navbar-logo light-content">
-    <img src="./assets/logo_text.png" alt="" class="navbar-logo dark-content">
+    <img src="site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/assets/logo_text.png" alt="" class="navbar-logo light-content">
+    <img src="site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/assets/logo_text.png" alt="" class="navbar-logo dark-content">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -2400,7 +2407,7 @@ Figure&nbsp;1: The conventional ScanPy (v1.11.4) UMAP and the PyTorch (v2.9.0) n
 <div aria-describedby="fig-reconstruction-validation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-reconstruction-validation" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-reconstruction-validation-1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent.">
+<div id="fig-reconstruction-validation-1" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent." data-fig-align="center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-reconstruction-validation-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="index_v1.01_files/figure-html/fig-reconstruction-validation-output-1.png" class="quarto-figure quarto-figure-center figure-img" data-ref-parent="fig-reconstruction-validation" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent." width="379" height="365">
@@ -2412,7 +2419,7 @@ Figure&nbsp;1: The conventional ScanPy (v1.11.4) UMAP and the PyTorch (v2.9.0) n
 </div>
 </div>
 <div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-reconstruction-validation" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-reconstruction-validation-2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14.">
+<div id="fig-reconstruction-validation-2" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14." data-fig-align="center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-reconstruction-validation-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="index_v1.01_files/figure-html/fig-reconstruction-validation-output-2.png" class="quarto-figure quarto-figure-center figure-img" data-ref-parent="fig-reconstruction-validation" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14." width="369" height="364">
@@ -3475,7 +3482,7 @@ York R, Mets DG. (2025). G–<span>P</span> <span>Atlas</span>: A neural network
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p><a href="https://www.arcadiascience.com/"><img src="./assets/logo_white.png" class="img-fluid" alt="Arcadia-Science" width="65"></a> Copyright 2025, Arcadia Science</p>
+<p><a href="https://www.arcadiascience.com/"><img src="site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/assets/logo_white.png" class="img-fluid" alt="Arcadia-Science" width="65"></a> Copyright 2025, Arcadia Science</p>
 </div>   
     <div class="nav-footer-center">
 

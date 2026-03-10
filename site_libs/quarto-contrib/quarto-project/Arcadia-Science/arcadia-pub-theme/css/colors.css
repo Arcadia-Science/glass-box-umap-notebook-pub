@@ -1,4 +1,10 @@
 :root {
+    /* Font colors — subject to change, currently matched to Stacks design system */
+    --arcadia-body-color: #1a1718;
+    --arcadia-label-color: #3b393f;
+    --arcadia-muted-color: #716972;
+    --arcadia-link-color: #0370ab;
+
     --arcadia-black: #09090a;
     --arcadia-black-50: #09090a7f;
     --arcadia-black-20: #09090a33;
