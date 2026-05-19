@@ -14,7 +14,7 @@ Please see [SETUP.qmd](pages/SETUP.qmd).
 
 **NOTE**: you must run the following command to properly clone the submodule with the repo:
 ```
-git clone https://github.com/Arcadia-Science/glass-box-umap.git --recurse-submodules
+git clone https://github.com/Arcadia-Science/glass-box-umap-notebook-pub.git --recurse-submodules
 ```
 
 If you already have the repo without the submodule from the normal clone command, run this to add the submodule:
