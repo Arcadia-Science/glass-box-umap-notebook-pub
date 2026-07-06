@@ -15,7 +15,7 @@ We apply the glass box UMAP approach to feature interpretation to the human bone
 
 Please see [SETUP.qmd](pages/SETUP.qmd).
 
-**NOTE**: you must run the following command to properly clone the submodule with the repo:
+**NOTE**: you must run the following command to properly clone the submodule with the repo below:
 ```
 git clone https://github.com/Arcadia-Science/glass-box-umap-notebook-pub.git --recurse-submodules
 ```
