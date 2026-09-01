@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.37">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -13,10 +13,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -98,10 +101,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-87d103fe628d0e54416c06c29d2dcc44.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-9b547512f6669b9f13ea580932fcad57.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-85e858ae7186f19e323e661519a1171f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-4d3acb7f9beb4a33e9374600a7672424.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -825,6 +828,7 @@ window.Quarto = {
 
 <link rel="stylesheet" href="site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/css/main.css">
 <link rel="stylesheet" href="site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/css/citation-box.css">
+<link rel="stylesheet" href="site_libs/quarto-contrib/quarto-project/Arcadia-Science/arcadia-pub-theme/css/additional-assets.css">
 
 
 
@@ -2413,7 +2417,7 @@ Figure&nbsp;1: The conventional ScanPy (v1.11.4) UMAP and the PyTorch (v2.9.0) n
 <div aria-describedby="fig-reconstruction-validation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-reconstruction-validation" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-reconstruction-validation-1" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent." data-fig-align="center">
+<div id="fig-reconstruction-validation-1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent.">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-reconstruction-validation-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="index_v1.09_files/figure-html/fig-reconstruction-validation-output-1.png" class="quarto-figure quarto-figure-center figure-img" data-ref-parent="fig-reconstruction-validation" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent." width="379" height="365">
@@ -2425,7 +2429,7 @@ Figure&nbsp;1: The conventional ScanPy (v1.11.4) UMAP and the PyTorch (v2.9.0) n
 </div>
 </div>
 <div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-reconstruction-validation" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-reconstruction-validation-2" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14." data-fig-align="center">
+<div id="fig-reconstruction-validation-2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14.">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-reconstruction-validation-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="index_v1.09_files/figure-html/fig-reconstruction-validation-output-2.png" class="quarto-figure quarto-figure-center figure-img" data-ref-parent="fig-reconstruction-validation" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14." width="369" height="364">
@@ -2462,7 +2466,7 @@ Figure&nbsp;2: Jacobian reconstruction. To validate that the Jacobian reconstruc
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    summary_file<span class="op">=</span>summary_interactive_file <span class="cf">if</span> <span class="kw">not</span> TRAIN <span class="cf">else</span> <span class="va">None</span></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div id="cell-fig-umap-hover-top-genes" class="cell quarto-layout-panel" data-layout-ncol="1" aria-label="Interactive plotly plot of the PyTorch (v2.9.0) UMAP embedding colored by cell type, where hover tips show the top gene features." data-execution_count="11">
+<div id="cell-fig-umap-hover-top-genes" class="cell quarto-layout-panel" aria-label="Interactive plotly plot of the PyTorch (v2.9.0) UMAP embedding colored by cell type, where hover tips show the top gene features." data-layout-ncol="1" data-execution_count="11">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-umap-hover-top-genes" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
@@ -2519,7 +2523,7 @@ Figure&nbsp;3: The PyTorch (v2.9.0) UMAP embedding colored by cell type with top
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    summary_file<span class="op">=</span>summary_interactive_file <span class="cf">if</span> <span class="kw">not</span> TRAIN <span class="cf">else</span> <span class="va">None</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div id="cell-fig-umap-plot-genes" class="cell quarto-layout-panel" data-layout-ncol="1" aria-label="Interactive plotly plot of the PyTorch (v2.9.0) UMAP embedding colored by top gene features." data-execution_count="12">
+<div id="cell-fig-umap-plot-genes" class="cell quarto-layout-panel" aria-label="Interactive plotly plot of the PyTorch (v2.9.0) UMAP embedding colored by top gene features." data-layout-ncol="1" data-execution_count="12">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-umap-plot-genes" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
