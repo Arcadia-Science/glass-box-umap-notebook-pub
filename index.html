@@ -104,7 +104,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-9b547512f6669b9f13ea580932fcad57.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-4d3acb7f9beb4a33e9374600a7672424.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1809f45cab6d19addede6ebc6eb20963.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -856,7 +856,11 @@ window.Quarto = {
     <ul class="dropdown-menu" aria-labelledby="nav-menu-iconify-qlementine-iconsversion-control-16-">    
         <li>
     <a class="dropdown-item" href="./index.html">
- <span class="dropdown-text">v1.10 (latest)</span></a>
+ <span class="dropdown-text">v1.11 (latest)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./index_v1.10.html">
+ <span class="dropdown-text">v1.10</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./index_v1.09.html">
@@ -1008,6 +1012,7 @@ window.Quarto = {
 
 
 
+<div class="additional-assets"><p class="additional-assets-label">Additional assets:</p><div class="additional-assets-list"><a class="additional-asset" href="https://github.com/Arcadia-Science/glass-box-umap-notebook-pub" rel="noopener"><span class="additional-asset-badge additional-asset-badge-code"><svg viewbox="0 0 18 9" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M0 5.1211L5.41408 7.91017V6.48048L1.7461 4.64063L5.41408 2.80078V1.38281L0 4.17188V5.1211Z" fill="currentColor"></path><path d="M6.77344 8.12111H8.14454L11.2734 0H9.90235L6.77344 8.12111Z" fill="currentColor"></path><path d="M11.8594 1.38281V2.80078L15.5508 4.64063L11.8594 6.48048V7.91017L17.2735 5.1211V4.16016L11.8594 1.38281Z" fill="currentColor"></path></svg></span><span class="additional-asset-name">Notebook pub repository</span></a></div></div>
 <div class="callout callout-style-default callout-important callout-titled" title="A Python package is now available">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1079,90 +1084,92 @@ y(x) = J(x) \cdot x
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>summary_interactive_file <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>SUMMARY_BASENAME<span class="sc">}</span><span class="ss">_interactive.csv"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="c97feb52" class="cell" data-execution_count="2">
+<div id="c97feb52" class="cell">
 <details class="code-fold">
 <summary>Data and preprocessing methods</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> anndata <span class="im">as</span> ad</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_bone_marrow_data(</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    url<span class="op">=</span><span class="st">"ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE194nnn/GSE194122/suppl/GSE194122_openproblems_neurips2021_cite_BMMC_processed.h5ad.gz"</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    filename<span class="op">=</span><span class="st">"GSE194122_openproblems_neurips2021_cite_BMMC_processed.h5ad.gz"</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> ad.AnnData:</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Downloads, unzips, and loads the bone marrow dataset.</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    unzipped_filename <span class="op">=</span> filename.replace(<span class="st">".gz"</span>, <span class="st">""</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.isfile(unzipped_filename):</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> os.path.isfile(filename):</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>            subprocess.run([<span class="st">"wget"</span>, url, <span class="st">"--no-verbose"</span>])</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        subprocess.run([<span class="st">"gunzip"</span>, filename])</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sc.read_h5ad(unzipped_filename)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_adata(</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    adata: ad.AnnData,</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    min_genes: <span class="bu">int</span> <span class="op">=</span> <span class="dv">100</span>,</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    min_cells: <span class="bu">int</span> <span class="op">=</span> <span class="dv">3</span>,</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    n_top_genes: <span class="bu">int</span> <span class="op">=</span> <span class="dv">2000</span>,</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    n_pcs: <span class="bu">int</span> <span class="op">=</span> <span class="dv">50</span>,</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    batch_key: <span class="bu">str</span> <span class="op">=</span> <span class="st">"Samplename"</span>,</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    run_scrublet: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> ad.AnnData:</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">    Runs the full scRNA-seq preprocessing pipeline on an AnnData object.</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">        adata (ad.AnnData): The raw AnnData object.</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">        min_genes (int): Min genes for cell filtering.</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">        min_cells (int): Min cells for gene filtering.</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">        n_top_genes (int): Number of highly variable genes to select.</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">        n_pcs (int): Number of principal components to compute.</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">        batch_key (str): The key in .obs for batch correction (if any).</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co">        run_scrublet (bool): Whether to run doublet detection.</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co">        ad.AnnData: The processed AnnData object.</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"--- Starting Preprocessing ---"</span>)</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Initial setup and QC gene flagging</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    adata.obs_names_make_unique()</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    adata.var_names_make_unique()</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    adata.var[<span class="st">"mt"</span>] <span class="op">=</span> adata.var_names.<span class="bu">str</span>.startswith(<span class="st">"MT-"</span>)</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    adata.var[<span class="st">"ribo"</span>] <span class="op">=</span> adata.var_names.<span class="bu">str</span>.startswith((<span class="st">"RPS"</span>, <span class="st">"RPL"</span>))</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    adata.var[<span class="st">"hb"</span>] <span class="op">=</span> adata.var_names.<span class="bu">str</span>.contains(<span class="st">"^HB[^(P)]"</span>)</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. Calculate QC</span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    sc.pp.calculate_qc_metrics(adata, qc_vars<span class="op">=</span>[<span class="st">"mt"</span>, <span class="st">"ribo"</span>, <span class="st">"hb"</span>], inplace<span class="op">=</span><span class="va">True</span>, log1p<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. Remove QC genes</span></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    genes_to_remove <span class="op">=</span> adata.var[<span class="st">"mt"</span>] <span class="op">|</span> adata.var[<span class="st">"ribo"</span>] </span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    adata._inplace_subset_var(<span class="op">~</span>genes_to_remove)</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. Filter cells, genes, and detect doublets</span></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    sc.pp.filter_cells(adata, min_genes<span class="op">=</span>min_genes)</span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    sc.pp.filter_genes(adata, min_cells<span class="op">=</span>min_cells)</span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> run_scrublet: </span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        sc.pp.scrublet(adata, batch_key<span class="op">=</span>batch_key)</span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 5. Normalize and find HVGs</span></span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    adata.layers[<span class="st">"counts"</span>] <span class="op">=</span> adata.X.copy()</span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    sc.pp.normalize_total(adata)</span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    sc.pp.log1p(adata)</span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    sc.pp.highly_variable_genes(adata, n_top_genes<span class="op">=</span>n_top_genes, batch_key<span class="op">=</span>batch_key)</span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 6. Run PCA</span></span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>    sc.tl.pca(adata, n_comps<span class="op">=</span>n_pcs, use_highly_variable<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> adata</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gzip</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shutil</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> urllib.request</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> anndata <span class="im">as</span> ad</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_bone_marrow_data(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    url<span class="op">=</span><span class="st">"ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE194nnn/GSE194122/suppl/GSE194122_openproblems_neurips2021_cite_BMMC_processed.h5ad.gz"</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    filename<span class="op">=</span><span class="st">"GSE194122_openproblems_neurips2021_cite_BMMC_processed.h5ad.gz"</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> ad.AnnData:</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">    Downloads, unzips, and loads the bone marrow dataset.</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    unzipped_filename <span class="op">=</span> filename.replace(<span class="st">".gz"</span>, <span class="st">""</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.isfile(unzipped_filename):</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> os.path.isfile(filename):</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>            urllib.request.urlretrieve(url, filename)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> gzip.<span class="bu">open</span>(filename, <span class="st">"rb"</span>) <span class="im">as</span> f_in, <span class="bu">open</span>(unzipped_filename, <span class="st">"wb"</span>) <span class="im">as</span> f_out:</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>            shutil.copyfileobj(f_in, f_out)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        os.remove(filename)  <span class="co"># mirror gunzip, which removes the .gz after decompressing</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sc.read_h5ad(unzipped_filename)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_adata(</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    adata: ad.AnnData,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    min_genes: <span class="bu">int</span> <span class="op">=</span> <span class="dv">100</span>,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    min_cells: <span class="bu">int</span> <span class="op">=</span> <span class="dv">3</span>,</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    n_top_genes: <span class="bu">int</span> <span class="op">=</span> <span class="dv">2000</span>,</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    n_pcs: <span class="bu">int</span> <span class="op">=</span> <span class="dv">50</span>,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    batch_key: <span class="bu">str</span> <span class="op">=</span> <span class="st">"Samplename"</span>,</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    run_scrublet: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> ad.AnnData:</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">    Runs the full scRNA-seq preprocessing pipeline on an AnnData object.</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">        adata (ad.AnnData): The raw AnnData object.</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">        min_genes (int): Min genes for cell filtering.</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">        min_cells (int): Min cells for gene filtering.</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">        n_top_genes (int): Number of highly variable genes to select.</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co">        n_pcs (int): Number of principal components to compute.</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co">        batch_key (str): The key in .obs for batch correction (if any).</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co">        run_scrublet (bool): Whether to run doublet detection.</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co">        ad.AnnData: The processed AnnData object.</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"--- Starting Preprocessing ---"</span>)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Initial setup and QC gene flagging</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    adata.obs_names_make_unique()</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    adata.var_names_make_unique()</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    adata.var[<span class="st">"mt"</span>] <span class="op">=</span> adata.var_names.<span class="bu">str</span>.startswith(<span class="st">"MT-"</span>)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    adata.var[<span class="st">"ribo"</span>] <span class="op">=</span> adata.var_names.<span class="bu">str</span>.startswith((<span class="st">"RPS"</span>, <span class="st">"RPL"</span>))</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    adata.var[<span class="st">"hb"</span>] <span class="op">=</span> adata.var_names.<span class="bu">str</span>.contains(<span class="st">"^HB[^(P)]"</span>)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. Calculate QC</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    sc.pp.calculate_qc_metrics(adata, qc_vars<span class="op">=</span>[<span class="st">"mt"</span>, <span class="st">"ribo"</span>, <span class="st">"hb"</span>], inplace<span class="op">=</span><span class="va">True</span>, log1p<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. Remove QC genes</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    genes_to_remove <span class="op">=</span> adata.var[<span class="st">"mt"</span>] <span class="op">|</span> adata.var[<span class="st">"ribo"</span>] </span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    adata._inplace_subset_var(<span class="op">~</span>genes_to_remove)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. Filter cells, genes, and detect doublets</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    sc.pp.filter_cells(adata, min_genes<span class="op">=</span>min_genes)</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>    sc.pp.filter_genes(adata, min_cells<span class="op">=</span>min_cells)</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> run_scrublet: </span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        sc.pp.scrublet(adata, batch_key<span class="op">=</span>batch_key)</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 5. Normalize and find HVGs</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    adata.layers[<span class="st">"counts"</span>] <span class="op">=</span> adata.X.copy()</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    sc.pp.normalize_total(adata)</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    sc.pp.log1p(adata)</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    sc.pp.highly_variable_genes(adata, n_top_genes<span class="op">=</span>n_top_genes, batch_key<span class="op">=</span>batch_key)</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 6. Run PCA</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>    sc.tl.pca(adata, n_comps<span class="op">=</span>n_pcs, use_highly_variable<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> adata</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>The preprocessing pipeline follows the standard procedure for the dataset in <a href="https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html">the ScanPy (v1.11.4) clustering tutorial</a>. We take the extra step of filtering out the less common cell types to simplify visualizations and keep only the top 12.</p>
-<div id="209b12af" class="cell" data-execution_count="3">
+<div id="209b12af" class="cell">
 <details class="code-fold">
 <summary>Load and preprocess data</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prepare_data(groupby_key: <span class="bu">str</span> <span class="op">=</span> <span class="st">'cell_type'</span>, n_pcs: <span class="bu">int</span> <span class="op">=</span> <span class="dv">50</span>, batch_key: <span class="bu">str</span> <span class="op">=</span> <span class="st">"Samplename"</span>) <span class="op">-&gt;</span> ad.AnnData:</span>
@@ -1202,7 +1209,7 @@ y(x) = J(x) \cdot x
 <span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        adata_t_cells <span class="op">=</span> ad.concat([adata_subset1,adata_subset3], label<span class="op">=</span><span class="st">"T_cell_type"</span>)</span>
 <span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        adata_final <span class="op">=</span> scp.preprocess_adata(</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        adata_final <span class="op">=</span> preprocess_adata(</span>
 <span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>            adata_t_cells,</span>
 <span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>            n_top_genes<span class="op">=</span><span class="dv">1000</span>, <span class="co"># You can use fewer HVGs for a subset</span></span>
 <span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>            n_pcs<span class="op">=</span><span class="dv">50</span>,         <span class="co"># You need fewer PCs for a subset</span></span>
@@ -1220,7 +1227,7 @@ y(x) = J(x) \cdot x
 </div>
 <p>We will also load a set of tools including the “UMAP PyTorch” toolbox in addition to ScanPy (v1.11.4), and define a custom PyTorch (v2.9.0) network to learn an embedding.</p>
 <p>We perform several independent UMAP fits to the data, starting from different random initializations, to generate error bars for the feature contributions.</p>
-<div id="5120d9a1" class="cell" data-execution_count="4">
+<div id="5120d9a1" class="cell">
 <details class="code-fold">
 <summary>GlassBoxUMAP class</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -1318,288 +1325,289 @@ y(x) = J(x) \cdot x
 <span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>                encoder<span class="op">=</span>network, n_neighbors<span class="op">=</span><span class="va">self</span>.n_neighbors, </span>
 <span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>                min_dist<span class="op">=</span><span class="va">self</span>.min_dist, random_state<span class="op">=</span><span class="va">self</span>.random_state <span class="op">+</span> i,</span>
 <span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>                lr<span class="op">=</span><span class="va">self</span>.lr, epochs<span class="op">=</span><span class="dv">0</span> <span class="cf">if</span> load_models <span class="cf">else</span> <span class="va">self</span>.epochs, <span class="co"># Only 1 epoch if loading</span></span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>                batch_size<span class="op">=</span><span class="va">self</span>.batch_size, num_workers<span class="op">=</span><span class="dv">8</span>, num_gpus<span class="op">=</span><span class="dv">1</span></span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Train or load</span></span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>            model_file <span class="op">=</span> model_path_pattern.<span class="bu">format</span>(i<span class="op">=</span>i)</span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> load_models:</span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> i <span class="op">&lt;</span> load_n_fits:                                </span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">try</span>:</span>
-<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># print(pumap_model.trainer)</span></span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># pumap_model.trainer.load_from_checkpoint('/home/ubuntu/james/glass-box-umap/lightning_logs/version_110/checkpoints/epoch=63-step=320.ckpt')</span></span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>                        pumap_model.device <span class="op">=</span> <span class="va">self</span>.device_</span>
-<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>                        pumap_model.encoder.to(<span class="va">self</span>.device_)</span>
-<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># We must "fit" with 1 epoch to initialize the graph</span></span>
-<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>                        pumap_model.fit(<span class="va">self</span>.train_data_) </span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>                        pumap_model.encoder.load_state_dict(</span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>                            torch.load(model_file, map_location<span class="op">=</span><span class="va">self</span>.device_)</span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>                        )</span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>                        pumap_model.encoder.<span class="bu">eval</span>() </span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>                        <span class="va">self</span>.models_.append(pumap_model)</span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>                        embedding <span class="op">=</span> pumap_model.transform(<span class="va">self</span>.train_data_) </span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>                        <span class="va">self</span>.embeddings_.append(embedding)</span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">except</span> <span class="pp">FileNotFoundError</span>:</span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>                        <span class="bu">print</span>(<span class="ss">f"Error: Model file not found at </span><span class="sc">{</span>model_file<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">raise</span></span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>                        <span class="bu">print</span>(<span class="ss">f"Error loading state dict for model </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">raise</span></span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>                    </span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>                pumap_model.fit(<span class="va">self</span>.train_data_)</span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> save_models:</span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>                    os.makedirs(os.path.dirname(model_file), exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>                    torch.save(pumap_model.encoder.state_dict(), model_file)</span>
-<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.models_.append(pumap_model)</span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>                embedding <span class="op">=</span> pumap_model.transform(<span class="va">self</span>.train_data_) </span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.embeddings_.append(embedding)</span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> transform(<span class="va">self</span>, X: np.ndarray, fit_index: <span class="bu">int</span> <span class="op">=</span> <span class="dv">0</span>) <span class="op">-&gt;</span> np.ndarray:</span>
-<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
-<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a><span class="co">        Transforms new data X into the embedding space using a trained model.</span></span>
-<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
-<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a><span class="co">            X (np.ndarray): New data to transform.</span></span>
-<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a><span class="co">            fit_index (int): Index of the model to use for transformation.</span></span>
-<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a><span class="co">        Returns:</span></span>
-<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a><span class="co">            np.ndarray: The UMAP embedding.</span></span>
-<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
-<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.models_:</span>
-<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"The model must be fitted before transforming."</span>)</span>
-<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> fit_index <span class="op">&gt;=</span> <span class="bu">len</span>(<span class="va">self</span>.models_):</span>
-<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">IndexError</span>(<span class="st">"fit_index is out of bounds."</span>)</span>
-<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>        X_tensor <span class="op">=</span> torch.tensor(X, dtype<span class="op">=</span>torch.float32)</span>
-<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.models_[fit_index].transform(X_tensor)</span>
-<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit_transform(<span class="va">self</span>, X: np.ndarray, <span class="op">**</span>kwargs) <span class="op">-&gt;</span> np.ndarray:</span>
-<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
-<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a><span class="co">        Fits the model to X and returns the embedding of X.</span></span>
-<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a><span class="co">        </span></span>
-<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
-<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a><span class="co">            X (np.ndarray): The input data (e.g., PCA embeddings).</span></span>
-<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a><span class="co">            **kwargs: Additional arguments passed to self.fit().</span></span>
-<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a><span class="co">        Returns:</span></span>
-<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a><span class="co">            np.ndarray: The UMAP embedding for the first fit (fit_index=0).</span></span>
-<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
-<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fit(X, <span class="op">**</span>kwargs)</span>
-<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.embeddings_[<span class="dv">0</span>]</span>
-<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> compute_attributions(<span class="va">self</span>, </span>
-<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a>                             X_centered_gene_expression: np.ndarray, </span>
-<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a>                             pca_components: np.ndarray, </span>
-<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a>                             jacobian_batch_size: <span class="bu">int</span> <span class="op">=</span> <span class="dv">40</span>):</span>
-<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
-<span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a><span class="co">        Computes the Jacobian and projects it to the original gene space.</span></span>
-<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
-<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a><span class="co">            X_centered_gene_expression (np.ndarray): Mean-centered gene expression</span></span>
-<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a><span class="co">                data, shape (n_samples, n_genes).</span></span>
-<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a><span class="co">            pca_components (np.ndarray): The PCA loading matrix (e.g., adata.varm["PCs"]),</span></span>
-<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a><span class="co">                shape (n_genes, n_pcs).</span></span>
-<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a><span class="co">            jacobian_batch_size (int): Batch size for Jacobian calculation.</span></span>
-<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
-<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.models_:</span>
-<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"The model must be fitted before computing contributions."</span>)</span>
-<span id="cb4-189"><a href="#cb4-189" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.train_data_ <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a>             <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"self.train_data_ not set. Please call fit() first."</span>)</span>
-<span id="cb4-191"><a href="#cb4-191" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-192"><a href="#cb4-192" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.feature_contributions_ <span class="op">=</span> []</span>
-<span id="cb4-193"><a href="#cb4-193" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.jacobians_ <span class="op">=</span> []</span>
-<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, model <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="va">self</span>.models_):</span>
-<span id="cb4-196"><a href="#cb4-196" aria-hidden="true" tabindex="-1"></a>            encoder <span class="op">=</span> model.encoder</span>
-<span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a>            encoder.<span class="bu">eval</span>()</span>
-<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 1. Compute Jacobian in batches (in PCA space)</span></span>
-<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a>            num_samples <span class="op">=</span> <span class="va">self</span>.train_data_.shape[<span class="dv">0</span>]</span>
-<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a>            jacobians_pca_list <span class="op">=</span> []</span>
-<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, num_samples, jacobian_batch_size):</span>
-<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a>                data_batch <span class="op">=</span> <span class="va">self</span>.train_data_[j:j <span class="op">+</span> jacobian_batch_size, :]</span>
-<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="cb4-205"><a href="#cb4-205" aria-hidden="true" tabindex="-1"></a>                jac_batch <span class="op">=</span> torch.autograd.functional.jacobian(</span>
-<span id="cb4-206"><a href="#cb4-206" aria-hidden="true" tabindex="-1"></a>                    encoder, data_batch, vectorize<span class="op">=</span><span class="va">True</span>, strategy<span class="op">=</span><span class="st">"reverse-mode"</span></span>
-<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Un-fuse the vectorized diagonal output</span></span>
-<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a>                jac_batch_unfused <span class="op">=</span> torch.einsum(<span class="st">'bibj-&gt;bij'</span>, jac_batch)</span>
-<span id="cb4-210"><a href="#cb4-210" aria-hidden="true" tabindex="-1"></a>                jacobians_pca_list.append(jac_batch_unfused.detach().cpu())</span>
-<span id="cb4-211"><a href="#cb4-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a>            jacobians_pca_tensor <span class="op">=</span> torch.cat(jacobians_pca_list, dim<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 2. Project Jacobian from PCA space back to gene space</span></span>
-<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a>            <span class="co"># J_gene[i, emb, gene] = J_pca[i, emb, pc] * PCs[gene, pc]</span></span>
-<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a>            gene_space_jacobian <span class="op">=</span> torch.einsum(</span>
-<span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a>                <span class="st">'bij,kj-&gt;bik'</span>, </span>
-<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a>                jacobians_pca_tensor, </span>
-<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a>                torch.tensor(pca_components, dtype<span class="op">=</span>torch.float32)</span>
-<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 3. Weight by each cell's mean-centered gene expression</span></span>
-<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a>            feature_contributions <span class="op">=</span> gene_space_jacobian.numpy() <span class="op">*</span> X_centered_gene_expression[:, np.newaxis, :]</span>
-<span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a>            <span class="co"># For memory efficiency</span></span>
-<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a>            feature_contributions <span class="op">=</span> feature_contributions.astype(<span class="st">'float16'</span>)</span>
-<span id="cb4-227"><a href="#cb4-227" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.feature_contributions_.append(feature_contributions)</span>
-<span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.jacobians_.append(jacobians_pca_tensor)</span>
-<span id="cb4-230"><a href="#cb4-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-231"><a href="#cb4-231" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span>
-<span id="cb4-232"><a href="#cb4-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-233"><a href="#cb4-233" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get_feature_importance(<span class="va">self</span>, </span>
-<span id="cb4-234"><a href="#cb4-234" aria-hidden="true" tabindex="-1"></a>                               adata: <span class="st">'ad.AnnData'</span>, </span>
-<span id="cb4-235"><a href="#cb4-235" aria-hidden="true" tabindex="-1"></a>                               groupby: <span class="bu">str</span>,</span>
-<span id="cb4-236"><a href="#cb4-236" aria-hidden="true" tabindex="-1"></a>                               gene_names: np.ndarray) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb4-237"><a href="#cb4-237" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
-<span id="cb4-238"><a href="#cb4-238" aria-hidden="true" tabindex="-1"></a><span class="co">        Aggregates feature contributions by a specified group.</span></span>
-<span id="cb4-239"><a href="#cb4-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-240"><a href="#cb4-240" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
-<span id="cb4-241"><a href="#cb4-241" aria-hidden="true" tabindex="-1"></a><span class="co">            adata (ad.AnnData): The AnnData object, needed for .obs groupings.</span></span>
-<span id="cb4-242"><a href="#cb4-242" aria-hidden="true" tabindex="-1"></a><span class="co">            groupby (str): The column in adata.obs to group by (e.g., 'cell_type').</span></span>
-<span id="cb4-243"><a href="#cb4-243" aria-hidden="true" tabindex="-1"></a><span class="co">            gene_names (np.ndarray): An array of gene names.</span></span>
-<span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-245"><a href="#cb4-245" aria-hidden="true" tabindex="-1"></a><span class="co">        Returns:</span></span>
-<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a><span class="co">            pd.DataFrame: A DataFrame with mean and SEM contributions for</span></span>
-<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a><span class="co">                          each gene in each group.</span></span>
-<span id="cb4-248"><a href="#cb4-248" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
-<span id="cb4-249"><a href="#cb4-249" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.feature_contributions_:</span>
-<span id="cb4-250"><a href="#cb4-250" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"Must run compute_attributions() first."</span>)</span>
-<span id="cb4-251"><a href="#cb4-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-252"><a href="#cb4-252" aria-hidden="true" tabindex="-1"></a>        all_run_jacobians <span class="op">=</span> np.array(<span class="va">self</span>.feature_contributions_)</span>
-<span id="cb4-253"><a href="#cb4-253" aria-hidden="true" tabindex="-1"></a>        n_runs <span class="op">=</span> all_run_jacobians.shape[<span class="dv">0</span>]</span>
-<span id="cb4-254"><a href="#cb4-254" aria-hidden="true" tabindex="-1"></a>        all_groups <span class="op">=</span> adata.obs[groupby].cat.categories</span>
-<span id="cb4-255"><a href="#cb4-255" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-256"><a href="#cb4-256" aria-hidden="true" tabindex="-1"></a>        summary_dfs <span class="op">=</span> []</span>
-<span id="cb4-257"><a href="#cb4-257" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> group <span class="kw">in</span> all_groups:</span>
-<span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a>            is_group_mask <span class="op">=</span> (adata.obs[groupby] <span class="op">==</span> group).values</span>
-<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> np.<span class="bu">sum</span>(is_group_mask) <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span> <span class="co"># Skip if group has no cells</span></span>
-<span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-262"><a href="#cb4-262" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Shape: (n_runs, n_cells_in_group, n_dims, n_genes)</span></span>
-<span id="cb4-263"><a href="#cb4-263" aria-hidden="true" tabindex="-1"></a>            jacobians_for_group <span class="op">=</span> all_run_jacobians[:, is_group_mask, :, :]</span>
-<span id="cb4-264"><a href="#cb4-264" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-265"><a href="#cb4-265" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Calculate magnitudes (L2 norm across UMAP dims)</span></span>
-<span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Shape: (n_runs, n_cells_in_group, n_genes)</span></span>
-<span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a>            magnitudes <span class="op">=</span> np.linalg.norm(jacobians_for_group, axis<span class="op">=</span><span class="dv">2</span>, <span class="bu">ord</span><span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a>            run_mean_contributions <span class="op">=</span> []</span>
-<span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> run_idx <span class="kw">in</span> <span class="bu">range</span>(n_runs):</span>
-<span id="cb4-271"><a href="#cb4-271" aria-hidden="true" tabindex="-1"></a>                run_mags <span class="op">=</span> magnitudes[run_idx, :, :] <span class="co"># (n_cells, n_genes)</span></span>
-<span id="cb4-272"><a href="#cb4-272" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="cb4-273"><a href="#cb4-273" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Normalize each cell by its own total contribution</span></span>
-<span id="cb4-274"><a href="#cb4-274" aria-hidden="true" tabindex="-1"></a>                cell_sums <span class="op">=</span> np.<span class="bu">sum</span>(run_mags, axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-275"><a href="#cb4-275" aria-hidden="true" tabindex="-1"></a>                normalized_mags <span class="op">=</span> run_mags <span class="op">/</span> (cell_sums <span class="op">+</span> <span class="fl">1e-9</span>)</span>
-<span id="cb4-276"><a href="#cb4-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-277"><a href="#cb4-277" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Get the mean contribution for each gene across cells *for this run*</span></span>
-<span id="cb4-278"><a href="#cb4-278" aria-hidden="true" tabindex="-1"></a>                run_mean_contributions.append(np.mean(normalized_mags, axis<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb4-279"><a href="#cb4-279" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-280"><a href="#cb4-280" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Aggregate across all runs</span></span>
-<span id="cb4-281"><a href="#cb4-281" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Shape: (n_runs, n_genes)</span></span>
-<span id="cb4-282"><a href="#cb4-282" aria-hidden="true" tabindex="-1"></a>            run_means_array <span class="op">=</span> np.array(run_mean_contributions) </span>
-<span id="cb4-283"><a href="#cb4-283" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-284"><a href="#cb4-284" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Final stats across runs</span></span>
-<span id="cb4-285"><a href="#cb4-285" aria-hidden="true" tabindex="-1"></a>            mean_contributions <span class="op">=</span> np.mean(run_means_array, axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb4-286"><a href="#cb4-286" aria-hidden="true" tabindex="-1"></a>            sem_contributions <span class="op">=</span> np.std(run_means_array, axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> np.sqrt(n_runs)</span>
-<span id="cb4-287"><a href="#cb4-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-288"><a href="#cb4-288" aria-hidden="true" tabindex="-1"></a>            df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb4-289"><a href="#cb4-289" aria-hidden="true" tabindex="-1"></a>                <span class="st">'gene'</span>: gene_names, </span>
-<span id="cb4-290"><a href="#cb4-290" aria-hidden="true" tabindex="-1"></a>                <span class="st">'mean_contribution'</span>: mean_contributions,</span>
-<span id="cb4-291"><a href="#cb4-291" aria-hidden="true" tabindex="-1"></a>                <span class="st">'sem_contribution'</span>: sem_contributions, </span>
-<span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a>                groupby: group</span>
-<span id="cb4-293"><a href="#cb4-293" aria-hidden="true" tabindex="-1"></a>            })</span>
-<span id="cb4-294"><a href="#cb4-294" aria-hidden="true" tabindex="-1"></a>            summary_dfs.append(df)</span>
-<span id="cb4-295"><a href="#cb4-295" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-296"><a href="#cb4-296" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.concat(summary_dfs, ignore_index<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-297"><a href="#cb4-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>                batch_size<span class="op">=</span><span class="va">self</span>.batch_size, num_workers<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>                num_gpus<span class="op">=</span><span class="dv">1</span> <span class="cf">if</span> <span class="va">self</span>.device_ <span class="op">==</span> <span class="st">'cuda'</span> <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Train or load</span></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>            model_file <span class="op">=</span> model_path_pattern.<span class="bu">format</span>(i<span class="op">=</span>i)</span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> load_models:</span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> i <span class="op">&lt;</span> load_n_fits:                                </span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">try</span>:</span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># print(pumap_model.trainer)</span></span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># pumap_model.trainer.load_from_checkpoint('/home/ubuntu/james/glass-box-umap/lightning_logs/version_110/checkpoints/epoch=63-step=320.ckpt')</span></span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>                        pumap_model.device <span class="op">=</span> <span class="va">self</span>.device_</span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>                        pumap_model.encoder.to(<span class="va">self</span>.device_)</span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># We must "fit" with 1 epoch to initialize the graph</span></span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>                        pumap_model.fit(<span class="va">self</span>.train_data_) </span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>                        pumap_model.encoder.load_state_dict(</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>                            torch.load(model_file, map_location<span class="op">=</span><span class="va">self</span>.device_)</span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>                        )</span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a>                        pumap_model.encoder.<span class="bu">eval</span>() </span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>                        <span class="va">self</span>.models_.append(pumap_model)</span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>                        embedding <span class="op">=</span> pumap_model.transform(<span class="va">self</span>.train_data_) </span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>                        <span class="va">self</span>.embeddings_.append(embedding)</span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">except</span> <span class="pp">FileNotFoundError</span>:</span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>                        <span class="bu">print</span>(<span class="ss">f"Error: Model file not found at </span><span class="sc">{</span>model_file<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">raise</span></span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>                        <span class="bu">print</span>(<span class="ss">f"Error loading state dict for model </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">raise</span></span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>                pumap_model.fit(<span class="va">self</span>.train_data_)</span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> save_models:</span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>                    os.makedirs(os.path.dirname(model_file), exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>                    torch.save(pumap_model.encoder.state_dict(), model_file)</span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.models_.append(pumap_model)</span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>                embedding <span class="op">=</span> pumap_model.transform(<span class="va">self</span>.train_data_) </span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.embeddings_.append(embedding)</span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> transform(<span class="va">self</span>, X: np.ndarray, fit_index: <span class="bu">int</span> <span class="op">=</span> <span class="dv">0</span>) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a><span class="co">        Transforms new data X into the embedding space using a trained model.</span></span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a><span class="co">            X (np.ndarray): New data to transform.</span></span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a><span class="co">            fit_index (int): Index of the model to use for transformation.</span></span>
+<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a><span class="co">        Returns:</span></span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a><span class="co">            np.ndarray: The UMAP embedding.</span></span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.models_:</span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"The model must be fitted before transforming."</span>)</span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> fit_index <span class="op">&gt;=</span> <span class="bu">len</span>(<span class="va">self</span>.models_):</span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">IndexError</span>(<span class="st">"fit_index is out of bounds."</span>)</span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>        X_tensor <span class="op">=</span> torch.tensor(X, dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.models_[fit_index].transform(X_tensor)</span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit_transform(<span class="va">self</span>, X: np.ndarray, <span class="op">**</span>kwargs) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a><span class="co">        Fits the model to X and returns the embedding of X.</span></span>
+<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a><span class="co">        </span></span>
+<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
+<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a><span class="co">            X (np.ndarray): The input data (e.g., PCA embeddings).</span></span>
+<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a><span class="co">            **kwargs: Additional arguments passed to self.fit().</span></span>
+<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a><span class="co">        Returns:</span></span>
+<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a><span class="co">            np.ndarray: The UMAP embedding for the first fit (fit_index=0).</span></span>
+<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fit(X, <span class="op">**</span>kwargs)</span>
+<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.embeddings_[<span class="dv">0</span>]</span>
+<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> compute_attributions(<span class="va">self</span>, </span>
+<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a>                             X_centered_gene_expression: np.ndarray, </span>
+<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a>                             pca_components: np.ndarray, </span>
+<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a>                             jacobian_batch_size: <span class="bu">int</span> <span class="op">=</span> <span class="dv">40</span>):</span>
+<span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a><span class="co">        Computes the Jacobian and projects it to the original gene space.</span></span>
+<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
+<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a><span class="co">            X_centered_gene_expression (np.ndarray): Mean-centered gene expression</span></span>
+<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a><span class="co">                data, shape (n_samples, n_genes).</span></span>
+<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a><span class="co">            pca_components (np.ndarray): The PCA loading matrix (e.g., adata.varm["PCs"]),</span></span>
+<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a><span class="co">                shape (n_genes, n_pcs).</span></span>
+<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a><span class="co">            jacobian_batch_size (int): Batch size for Jacobian calculation.</span></span>
+<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.models_:</span>
+<span id="cb4-189"><a href="#cb4-189" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"The model must be fitted before computing contributions."</span>)</span>
+<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.train_data_ <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb4-191"><a href="#cb4-191" aria-hidden="true" tabindex="-1"></a>             <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"self.train_data_ not set. Please call fit() first."</span>)</span>
+<span id="cb4-192"><a href="#cb4-192" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-193"><a href="#cb4-193" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.feature_contributions_ <span class="op">=</span> []</span>
+<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.jacobians_ <span class="op">=</span> []</span>
+<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-196"><a href="#cb4-196" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, model <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="va">self</span>.models_):</span>
+<span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a>            encoder <span class="op">=</span> model.encoder</span>
+<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a>            encoder.<span class="bu">eval</span>()</span>
+<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 1. Compute Jacobian in batches (in PCA space)</span></span>
+<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a>            num_samples <span class="op">=</span> <span class="va">self</span>.train_data_.shape[<span class="dv">0</span>]</span>
+<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a>            jacobians_pca_list <span class="op">=</span> []</span>
+<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, num_samples, jacobian_batch_size):</span>
+<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a>                data_batch <span class="op">=</span> <span class="va">self</span>.train_data_[j:j <span class="op">+</span> jacobian_batch_size, :]</span>
+<span id="cb4-205"><a href="#cb4-205" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb4-206"><a href="#cb4-206" aria-hidden="true" tabindex="-1"></a>                jac_batch <span class="op">=</span> torch.autograd.functional.jacobian(</span>
+<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a>                    encoder, data_batch, vectorize<span class="op">=</span><span class="va">True</span>, strategy<span class="op">=</span><span class="st">"reverse-mode"</span></span>
+<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Un-fuse the vectorized diagonal output</span></span>
+<span id="cb4-210"><a href="#cb4-210" aria-hidden="true" tabindex="-1"></a>                jac_batch_unfused <span class="op">=</span> torch.einsum(<span class="st">'bibj-&gt;bij'</span>, jac_batch)</span>
+<span id="cb4-211"><a href="#cb4-211" aria-hidden="true" tabindex="-1"></a>                jacobians_pca_list.append(jac_batch_unfused.detach().cpu())</span>
+<span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a>            jacobians_pca_tensor <span class="op">=</span> torch.cat(jacobians_pca_list, dim<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 2. Project Jacobian from PCA space back to gene space</span></span>
+<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a>            <span class="co"># J_gene[i, emb, gene] = J_pca[i, emb, pc] * PCs[gene, pc]</span></span>
+<span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a>            gene_space_jacobian <span class="op">=</span> torch.einsum(</span>
+<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a>                <span class="st">'bij,kj-&gt;bik'</span>, </span>
+<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a>                jacobians_pca_tensor, </span>
+<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a>                torch.tensor(pca_components, dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 3. Weight by each cell's mean-centered gene expression</span></span>
+<span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a>            feature_contributions <span class="op">=</span> gene_space_jacobian.numpy() <span class="op">*</span> X_centered_gene_expression[:, np.newaxis, :]</span>
+<span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a>            <span class="co"># For memory efficiency</span></span>
+<span id="cb4-227"><a href="#cb4-227" aria-hidden="true" tabindex="-1"></a>            feature_contributions <span class="op">=</span> feature_contributions.astype(<span class="st">'float16'</span>)</span>
+<span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.feature_contributions_.append(feature_contributions)</span>
+<span id="cb4-230"><a href="#cb4-230" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.jacobians_.append(jacobians_pca_tensor)</span>
+<span id="cb4-231"><a href="#cb4-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-232"><a href="#cb4-232" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span>
+<span id="cb4-233"><a href="#cb4-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-234"><a href="#cb4-234" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get_feature_importance(<span class="va">self</span>, </span>
+<span id="cb4-235"><a href="#cb4-235" aria-hidden="true" tabindex="-1"></a>                               adata: <span class="st">'ad.AnnData'</span>, </span>
+<span id="cb4-236"><a href="#cb4-236" aria-hidden="true" tabindex="-1"></a>                               groupby: <span class="bu">str</span>,</span>
+<span id="cb4-237"><a href="#cb4-237" aria-hidden="true" tabindex="-1"></a>                               gene_names: np.ndarray) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb4-238"><a href="#cb4-238" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb4-239"><a href="#cb4-239" aria-hidden="true" tabindex="-1"></a><span class="co">        Aggregates feature contributions by a specified group.</span></span>
+<span id="cb4-240"><a href="#cb4-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-241"><a href="#cb4-241" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
+<span id="cb4-242"><a href="#cb4-242" aria-hidden="true" tabindex="-1"></a><span class="co">            adata (ad.AnnData): The AnnData object, needed for .obs groupings.</span></span>
+<span id="cb4-243"><a href="#cb4-243" aria-hidden="true" tabindex="-1"></a><span class="co">            groupby (str): The column in adata.obs to group by (e.g., 'cell_type').</span></span>
+<span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a><span class="co">            gene_names (np.ndarray): An array of gene names.</span></span>
+<span id="cb4-245"><a href="#cb4-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a><span class="co">        Returns:</span></span>
+<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a><span class="co">            pd.DataFrame: A DataFrame with mean and SEM contributions for</span></span>
+<span id="cb4-248"><a href="#cb4-248" aria-hidden="true" tabindex="-1"></a><span class="co">                          each gene in each group.</span></span>
+<span id="cb4-249"><a href="#cb4-249" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb4-250"><a href="#cb4-250" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.feature_contributions_:</span>
+<span id="cb4-251"><a href="#cb4-251" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"Must run compute_attributions() first."</span>)</span>
+<span id="cb4-252"><a href="#cb4-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-253"><a href="#cb4-253" aria-hidden="true" tabindex="-1"></a>        all_run_jacobians <span class="op">=</span> np.array(<span class="va">self</span>.feature_contributions_)</span>
+<span id="cb4-254"><a href="#cb4-254" aria-hidden="true" tabindex="-1"></a>        n_runs <span class="op">=</span> all_run_jacobians.shape[<span class="dv">0</span>]</span>
+<span id="cb4-255"><a href="#cb4-255" aria-hidden="true" tabindex="-1"></a>        all_groups <span class="op">=</span> adata.obs[groupby].cat.categories</span>
+<span id="cb4-256"><a href="#cb4-256" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-257"><a href="#cb4-257" aria-hidden="true" tabindex="-1"></a>        summary_dfs <span class="op">=</span> []</span>
+<span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> group <span class="kw">in</span> all_groups:</span>
+<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a>            is_group_mask <span class="op">=</span> (adata.obs[groupby] <span class="op">==</span> group).values</span>
+<span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> np.<span class="bu">sum</span>(is_group_mask) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span> <span class="co"># Skip if group has no cells</span></span>
+<span id="cb4-262"><a href="#cb4-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-263"><a href="#cb4-263" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Shape: (n_runs, n_cells_in_group, n_dims, n_genes)</span></span>
+<span id="cb4-264"><a href="#cb4-264" aria-hidden="true" tabindex="-1"></a>            jacobians_for_group <span class="op">=</span> all_run_jacobians[:, is_group_mask, :, :]</span>
+<span id="cb4-265"><a href="#cb4-265" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Calculate magnitudes (L2 norm across UMAP dims)</span></span>
+<span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Shape: (n_runs, n_cells_in_group, n_genes)</span></span>
+<span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a>            magnitudes <span class="op">=</span> np.linalg.norm(jacobians_for_group, axis<span class="op">=</span><span class="dv">2</span>, <span class="bu">ord</span><span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a>            run_mean_contributions <span class="op">=</span> []</span>
+<span id="cb4-271"><a href="#cb4-271" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> run_idx <span class="kw">in</span> <span class="bu">range</span>(n_runs):</span>
+<span id="cb4-272"><a href="#cb4-272" aria-hidden="true" tabindex="-1"></a>                run_mags <span class="op">=</span> magnitudes[run_idx, :, :] <span class="co"># (n_cells, n_genes)</span></span>
+<span id="cb4-273"><a href="#cb4-273" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb4-274"><a href="#cb4-274" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Normalize each cell by its own total contribution</span></span>
+<span id="cb4-275"><a href="#cb4-275" aria-hidden="true" tabindex="-1"></a>                cell_sums <span class="op">=</span> np.<span class="bu">sum</span>(run_mags, axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-276"><a href="#cb4-276" aria-hidden="true" tabindex="-1"></a>                normalized_mags <span class="op">=</span> run_mags <span class="op">/</span> (cell_sums <span class="op">+</span> <span class="fl">1e-9</span>)</span>
+<span id="cb4-277"><a href="#cb4-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-278"><a href="#cb4-278" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Get the mean contribution for each gene across cells *for this run*</span></span>
+<span id="cb4-279"><a href="#cb4-279" aria-hidden="true" tabindex="-1"></a>                run_mean_contributions.append(np.mean(normalized_mags, axis<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb4-280"><a href="#cb4-280" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-281"><a href="#cb4-281" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Aggregate across all runs</span></span>
+<span id="cb4-282"><a href="#cb4-282" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Shape: (n_runs, n_genes)</span></span>
+<span id="cb4-283"><a href="#cb4-283" aria-hidden="true" tabindex="-1"></a>            run_means_array <span class="op">=</span> np.array(run_mean_contributions) </span>
+<span id="cb4-284"><a href="#cb4-284" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-285"><a href="#cb4-285" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Final stats across runs</span></span>
+<span id="cb4-286"><a href="#cb4-286" aria-hidden="true" tabindex="-1"></a>            mean_contributions <span class="op">=</span> np.mean(run_means_array, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb4-287"><a href="#cb4-287" aria-hidden="true" tabindex="-1"></a>            sem_contributions <span class="op">=</span> np.std(run_means_array, axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> np.sqrt(n_runs)</span>
+<span id="cb4-288"><a href="#cb4-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-289"><a href="#cb4-289" aria-hidden="true" tabindex="-1"></a>            df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb4-290"><a href="#cb4-290" aria-hidden="true" tabindex="-1"></a>                <span class="st">'gene'</span>: gene_names, </span>
+<span id="cb4-291"><a href="#cb4-291" aria-hidden="true" tabindex="-1"></a>                <span class="st">'mean_contribution'</span>: mean_contributions,</span>
+<span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a>                <span class="st">'sem_contribution'</span>: sem_contributions, </span>
+<span id="cb4-293"><a href="#cb4-293" aria-hidden="true" tabindex="-1"></a>                groupby: group</span>
+<span id="cb4-294"><a href="#cb4-294" aria-hidden="true" tabindex="-1"></a>            })</span>
+<span id="cb4-295"><a href="#cb4-295" aria-hidden="true" tabindex="-1"></a>            summary_dfs.append(df)</span>
+<span id="cb4-296"><a href="#cb4-296" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-297"><a href="#cb4-297" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.concat(summary_dfs, ignore_index<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb4-298"><a href="#cb4-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-299"><a href="#cb4-299" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> save_analysis_summary(<span class="va">self</span>, </span>
-<span id="cb4-300"><a href="#cb4-300" aria-hidden="true" tabindex="-1"></a>                              adata: <span class="st">'ad.AnnData'</span>, </span>
-<span id="cb4-301"><a href="#cb4-301" aria-hidden="true" tabindex="-1"></a>                              groupby: <span class="bu">str</span>,</span>
-<span id="cb4-302"><a href="#cb4-302" aria-hidden="true" tabindex="-1"></a>                              basename: <span class="bu">str</span> <span class="op">=</span> <span class="st">"analysis_summary"</span>):</span>
-<span id="cb4-303"><a href="#cb4-303" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
-<span id="cb4-304"><a href="#cb4-304" aria-hidden="true" tabindex="-1"></a><span class="co">        Saves all necessary data for offline plotting and analysis.</span></span>
-<span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a><span class="co">        </span></span>
-<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
-<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a><span class="co">            adata (ad.AnnData): The AnnData object, needed for .obs groupings</span></span>
-<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a><span class="co">                                and gene names.</span></span>
-<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a><span class="co">            groupby (str): The column in adata.obs to group by (e.g., 'cell_type').</span></span>
-<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a><span class="co">            basename (str): The prefix for the three output files.</span></span>
-<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
-<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="kw">not</span> <span class="va">self</span>.feature_contributions_ <span class="kw">or</span> </span>
-<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a>            <span class="kw">not</span> <span class="va">self</span>.embeddings_ <span class="kw">or</span> </span>
-<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a>            <span class="kw">not</span> <span class="va">self</span>.jacobians_ <span class="kw">or</span> </span>
-<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.train_data_ <span class="kw">is</span> <span class="va">None</span>):</span>
-<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"Must run fit() and compute_attributions() first."</span>)</span>
-<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1. Save population-level statistics</span></span>
-<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a>        stats_df <span class="op">=</span> <span class="va">self</span>.get_feature_importance(adata, groupby, adata.var_names.values)</span>
-<span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a>        stats_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>basename<span class="sc">}</span><span class="ss">_stats.csv"</span></span>
-<span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a>        stats_df.to_csv(stats_filename, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb4-322"><a href="#cb4-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-323"><a href="#cb4-323" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. Save plot data (NPZ)</span></span>
-<span id="cb4-324"><a href="#cb4-324" aria-hidden="true" tabindex="-1"></a>        mean_vector_dict <span class="op">=</span> {}</span>
-<span id="cb4-325"><a href="#cb4-325" aria-hidden="true" tabindex="-1"></a>        all_groups <span class="op">=</span> adata.obs[groupby].cat.categories</span>
-<span id="cb4-326"><a href="#cb4-326" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> group <span class="kw">in</span> all_groups:</span>
-<span id="cb4-327"><a href="#cb4-327" aria-hidden="true" tabindex="-1"></a>            is_group_mask <span class="op">=</span> (adata.obs[groupby] <span class="op">==</span> group).values</span>
-<span id="cb4-328"><a href="#cb4-328" aria-hidden="true" tabindex="-1"></a>            mean_vector_dict[group] <span class="op">=</span> np.mean(<span class="va">self</span>.feature_contributions_[<span class="dv">0</span>][is_group_mask], axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb4-329"><a href="#cb4-329" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-330"><a href="#cb4-330" aria-hidden="true" tabindex="-1"></a>        jacobxall_first_run <span class="op">=</span> <span class="va">self</span>.feature_contributions_[<span class="dv">0</span>]</span>
-<span id="cb4-331"><a href="#cb4-331" aria-hidden="true" tabindex="-1"></a>        jacobian_magnitude <span class="op">=</span> np.linalg.norm(jacobxall_first_run, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb4-332"><a href="#cb4-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-333"><a href="#cb4-333" aria-hidden="true" tabindex="-1"></a>        jacobian_0 <span class="op">=</span> <span class="va">self</span>.jacobians_[<span class="dv">0</span>]</span>
-<span id="cb4-334"><a href="#cb4-334" aria-hidden="true" tabindex="-1"></a>        pca_data_0 <span class="op">=</span> <span class="va">self</span>.train_data_.squeeze().detach().cpu().numpy()</span>
-<span id="cb4-335"><a href="#cb4-335" aria-hidden="true" tabindex="-1"></a>        reconstruction_0 <span class="op">=</span> np.einsum(<span class="st">'ijk,ik-&gt;ij'</span>, jacobian_0.numpy(), pca_data_0)</span>
-<span id="cb4-336"><a href="#cb4-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-337"><a href="#cb4-337" aria-hidden="true" tabindex="-1"></a>        plot_data_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>basename<span class="sc">}</span><span class="ss">_plot_data.npz"</span></span>
-<span id="cb4-338"><a href="#cb4-338" aria-hidden="true" tabindex="-1"></a>        np.savez_compressed(</span>
-<span id="cb4-339"><a href="#cb4-339" aria-hidden="true" tabindex="-1"></a>            plot_data_filename,</span>
-<span id="cb4-340"><a href="#cb4-340" aria-hidden="true" tabindex="-1"></a>            embedding<span class="op">=</span><span class="va">self</span>.embeddings_[<span class="dv">0</span>],</span>
-<span id="cb4-341"><a href="#cb4-341" aria-hidden="true" tabindex="-1"></a>            group_labels<span class="op">=</span>adata.obs[groupby].values,</span>
-<span id="cb4-342"><a href="#cb4-342" aria-hidden="true" tabindex="-1"></a>            group_by_key<span class="op">=</span>groupby, <span class="co"># Store the key name</span></span>
-<span id="cb4-343"><a href="#cb4-343" aria-hidden="true" tabindex="-1"></a>            mean_jacobian_vectors<span class="op">=</span>mean_vector_dict,</span>
-<span id="cb4-344"><a href="#cb4-344" aria-hidden="true" tabindex="-1"></a>            jacobian_magnitude<span class="op">=</span>jacobian_magnitude,</span>
-<span id="cb4-345"><a href="#cb4-345" aria-hidden="true" tabindex="-1"></a>            gene_names<span class="op">=</span>adata.var_names.values,</span>
-<span id="cb4-346"><a href="#cb4-346" aria-hidden="true" tabindex="-1"></a>            jacobian_reconstruction<span class="op">=</span>reconstruction_0  </span>
-<span id="cb4-347"><a href="#cb4-347" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb4-348"><a href="#cb4-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-349"><a href="#cb4-349" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. Save interactive plot data</span></span>
-<span id="cb4-350"><a href="#cb4-350" aria-hidden="true" tabindex="-1"></a>        interactive_df <span class="op">=</span> <span class="va">self</span>._prepare_plotly_df(</span>
-<span id="cb4-351"><a href="#cb4-351" aria-hidden="true" tabindex="-1"></a>            adata, groupby<span class="op">=</span>groupby, fit_index<span class="op">=</span><span class="dv">0</span>, top_n_genes<span class="op">=</span><span class="dv">8</span></span>
-<span id="cb4-352"><a href="#cb4-352" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb4-353"><a href="#cb4-353" aria-hidden="true" tabindex="-1"></a>        interactive_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>basename<span class="sc">}</span><span class="ss">_interactive.csv"</span></span>
-<span id="cb4-354"><a href="#cb4-354" aria-hidden="true" tabindex="-1"></a>        interactive_df.to_csv(interactive_filename, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb4-355"><a href="#cb4-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-356"><a href="#cb4-356" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _prepare_plotly_df(<span class="va">self</span>, </span>
-<span id="cb4-357"><a href="#cb4-357" aria-hidden="true" tabindex="-1"></a>                           adata: <span class="st">'ad.AnnData'</span>, </span>
-<span id="cb4-358"><a href="#cb4-358" aria-hidden="true" tabindex="-1"></a>                           groupby: <span class="bu">str</span>, </span>
-<span id="cb4-359"><a href="#cb4-359" aria-hidden="true" tabindex="-1"></a>                           fit_index: <span class="bu">int</span> <span class="op">=</span> <span class="dv">0</span>, </span>
-<span id="cb4-360"><a href="#cb4-360" aria-hidden="true" tabindex="-1"></a>                           top_n_genes: <span class="bu">int</span> <span class="op">=</span> <span class="dv">8</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb4-361"><a href="#cb4-361" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""(Private) Prepares a DataFrame for interactive plotting."""</span></span>
-<span id="cb4-362"><a href="#cb4-362" aria-hidden="true" tabindex="-1"></a>        embedding <span class="op">=</span> <span class="va">self</span>.embeddings_[fit_index]</span>
-<span id="cb4-363"><a href="#cb4-363" aria-hidden="true" tabindex="-1"></a>        jacobxall <span class="op">=</span> <span class="va">self</span>.feature_contributions_[fit_index]</span>
-<span id="cb4-364"><a href="#cb4-364" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-365"><a href="#cb4-365" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> pd.DataFrame(embedding, columns<span class="op">=</span>[<span class="st">'UMAP 0'</span>, <span class="st">'UMAP 1'</span>])</span>
-<span id="cb4-366"><a href="#cb4-366" aria-hidden="true" tabindex="-1"></a>        df[groupby] <span class="op">=</span> adata.obs[groupby].values</span>
-<span id="cb4-367"><a href="#cb4-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-368"><a href="#cb4-368" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calculate squared distance and find top contributing genes</span></span>
-<span id="cb4-369"><a href="#cb4-369" aria-hidden="true" tabindex="-1"></a>        gene_dist_sq <span class="op">=</span> jacobxall[:, <span class="dv">0</span>, :]<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> jacobxall[:, <span class="dv">1</span>, :]<span class="op">**</span><span class="dv">2</span></span>
-<span id="cb4-370"><a href="#cb4-370" aria-hidden="true" tabindex="-1"></a>        genes <span class="op">=</span> adata.var.index.values</span>
-<span id="cb4-371"><a href="#cb4-371" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-372"><a href="#cb4-372" aria-hidden="true" tabindex="-1"></a>        top_gene_indices <span class="op">=</span> np.argsort(gene_dist_sq, axis<span class="op">=</span><span class="dv">1</span>)[:, ::<span class="op">-</span><span class="dv">1</span>][:, :top_n_genes]</span>
-<span id="cb4-373"><a href="#cb4-373" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-374"><a href="#cb4-374" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(top_n_genes):</span>
-<span id="cb4-375"><a href="#cb4-375" aria-hidden="true" tabindex="-1"></a>            df[<span class="ss">f'gene_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span>] <span class="op">=</span> genes[top_gene_indices[:, i]]</span>
-<span id="cb4-376"><a href="#cb4-376" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-377"><a href="#cb4-377" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-299"><a href="#cb4-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-300"><a href="#cb4-300" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> save_analysis_summary(<span class="va">self</span>, </span>
+<span id="cb4-301"><a href="#cb4-301" aria-hidden="true" tabindex="-1"></a>                              adata: <span class="st">'ad.AnnData'</span>, </span>
+<span id="cb4-302"><a href="#cb4-302" aria-hidden="true" tabindex="-1"></a>                              groupby: <span class="bu">str</span>,</span>
+<span id="cb4-303"><a href="#cb4-303" aria-hidden="true" tabindex="-1"></a>                              basename: <span class="bu">str</span> <span class="op">=</span> <span class="st">"analysis_summary"</span>):</span>
+<span id="cb4-304"><a href="#cb4-304" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a><span class="co">        Saves all necessary data for offline plotting and analysis.</span></span>
+<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a><span class="co">        </span></span>
+<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
+<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a><span class="co">            adata (ad.AnnData): The AnnData object, needed for .obs groupings</span></span>
+<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a><span class="co">                                and gene names.</span></span>
+<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a><span class="co">            groupby (str): The column in adata.obs to group by (e.g., 'cell_type').</span></span>
+<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a><span class="co">            basename (str): The prefix for the three output files.</span></span>
+<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="kw">not</span> <span class="va">self</span>.feature_contributions_ <span class="kw">or</span> </span>
+<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a>            <span class="kw">not</span> <span class="va">self</span>.embeddings_ <span class="kw">or</span> </span>
+<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a>            <span class="kw">not</span> <span class="va">self</span>.jacobians_ <span class="kw">or</span> </span>
+<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.train_data_ <span class="kw">is</span> <span class="va">None</span>):</span>
+<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"Must run fit() and compute_attributions() first."</span>)</span>
+<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1. Save population-level statistics</span></span>
+<span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a>        stats_df <span class="op">=</span> <span class="va">self</span>.get_feature_importance(adata, groupby, adata.var_names.values)</span>
+<span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a>        stats_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>basename<span class="sc">}</span><span class="ss">_stats.csv"</span></span>
+<span id="cb4-322"><a href="#cb4-322" aria-hidden="true" tabindex="-1"></a>        stats_df.to_csv(stats_filename, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-323"><a href="#cb4-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-324"><a href="#cb4-324" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. Save plot data (NPZ)</span></span>
+<span id="cb4-325"><a href="#cb4-325" aria-hidden="true" tabindex="-1"></a>        mean_vector_dict <span class="op">=</span> {}</span>
+<span id="cb4-326"><a href="#cb4-326" aria-hidden="true" tabindex="-1"></a>        all_groups <span class="op">=</span> adata.obs[groupby].cat.categories</span>
+<span id="cb4-327"><a href="#cb4-327" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> group <span class="kw">in</span> all_groups:</span>
+<span id="cb4-328"><a href="#cb4-328" aria-hidden="true" tabindex="-1"></a>            is_group_mask <span class="op">=</span> (adata.obs[groupby] <span class="op">==</span> group).values</span>
+<span id="cb4-329"><a href="#cb4-329" aria-hidden="true" tabindex="-1"></a>            mean_vector_dict[group] <span class="op">=</span> np.mean(<span class="va">self</span>.feature_contributions_[<span class="dv">0</span>][is_group_mask], axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb4-330"><a href="#cb4-330" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-331"><a href="#cb4-331" aria-hidden="true" tabindex="-1"></a>        jacobxall_first_run <span class="op">=</span> <span class="va">self</span>.feature_contributions_[<span class="dv">0</span>]</span>
+<span id="cb4-332"><a href="#cb4-332" aria-hidden="true" tabindex="-1"></a>        jacobian_magnitude <span class="op">=</span> np.linalg.norm(jacobxall_first_run, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-333"><a href="#cb4-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-334"><a href="#cb4-334" aria-hidden="true" tabindex="-1"></a>        jacobian_0 <span class="op">=</span> <span class="va">self</span>.jacobians_[<span class="dv">0</span>]</span>
+<span id="cb4-335"><a href="#cb4-335" aria-hidden="true" tabindex="-1"></a>        pca_data_0 <span class="op">=</span> <span class="va">self</span>.train_data_.squeeze().detach().cpu().numpy()</span>
+<span id="cb4-336"><a href="#cb4-336" aria-hidden="true" tabindex="-1"></a>        reconstruction_0 <span class="op">=</span> np.einsum(<span class="st">'ijk,ik-&gt;ij'</span>, jacobian_0.numpy(), pca_data_0)</span>
+<span id="cb4-337"><a href="#cb4-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-338"><a href="#cb4-338" aria-hidden="true" tabindex="-1"></a>        plot_data_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>basename<span class="sc">}</span><span class="ss">_plot_data.npz"</span></span>
+<span id="cb4-339"><a href="#cb4-339" aria-hidden="true" tabindex="-1"></a>        np.savez_compressed(</span>
+<span id="cb4-340"><a href="#cb4-340" aria-hidden="true" tabindex="-1"></a>            plot_data_filename,</span>
+<span id="cb4-341"><a href="#cb4-341" aria-hidden="true" tabindex="-1"></a>            embedding<span class="op">=</span><span class="va">self</span>.embeddings_[<span class="dv">0</span>],</span>
+<span id="cb4-342"><a href="#cb4-342" aria-hidden="true" tabindex="-1"></a>            group_labels<span class="op">=</span>adata.obs[groupby].values,</span>
+<span id="cb4-343"><a href="#cb4-343" aria-hidden="true" tabindex="-1"></a>            group_by_key<span class="op">=</span>groupby, <span class="co"># Store the key name</span></span>
+<span id="cb4-344"><a href="#cb4-344" aria-hidden="true" tabindex="-1"></a>            mean_jacobian_vectors<span class="op">=</span>mean_vector_dict,</span>
+<span id="cb4-345"><a href="#cb4-345" aria-hidden="true" tabindex="-1"></a>            jacobian_magnitude<span class="op">=</span>jacobian_magnitude,</span>
+<span id="cb4-346"><a href="#cb4-346" aria-hidden="true" tabindex="-1"></a>            gene_names<span class="op">=</span>adata.var_names.values,</span>
+<span id="cb4-347"><a href="#cb4-347" aria-hidden="true" tabindex="-1"></a>            jacobian_reconstruction<span class="op">=</span>reconstruction_0  </span>
+<span id="cb4-348"><a href="#cb4-348" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-349"><a href="#cb4-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-350"><a href="#cb4-350" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. Save interactive plot data</span></span>
+<span id="cb4-351"><a href="#cb4-351" aria-hidden="true" tabindex="-1"></a>        interactive_df <span class="op">=</span> <span class="va">self</span>._prepare_plotly_df(</span>
+<span id="cb4-352"><a href="#cb4-352" aria-hidden="true" tabindex="-1"></a>            adata, groupby<span class="op">=</span>groupby, fit_index<span class="op">=</span><span class="dv">0</span>, top_n_genes<span class="op">=</span><span class="dv">8</span></span>
+<span id="cb4-353"><a href="#cb4-353" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-354"><a href="#cb4-354" aria-hidden="true" tabindex="-1"></a>        interactive_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>basename<span class="sc">}</span><span class="ss">_interactive.csv"</span></span>
+<span id="cb4-355"><a href="#cb4-355" aria-hidden="true" tabindex="-1"></a>        interactive_df.to_csv(interactive_filename, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-356"><a href="#cb4-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-357"><a href="#cb4-357" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _prepare_plotly_df(<span class="va">self</span>, </span>
+<span id="cb4-358"><a href="#cb4-358" aria-hidden="true" tabindex="-1"></a>                           adata: <span class="st">'ad.AnnData'</span>, </span>
+<span id="cb4-359"><a href="#cb4-359" aria-hidden="true" tabindex="-1"></a>                           groupby: <span class="bu">str</span>, </span>
+<span id="cb4-360"><a href="#cb4-360" aria-hidden="true" tabindex="-1"></a>                           fit_index: <span class="bu">int</span> <span class="op">=</span> <span class="dv">0</span>, </span>
+<span id="cb4-361"><a href="#cb4-361" aria-hidden="true" tabindex="-1"></a>                           top_n_genes: <span class="bu">int</span> <span class="op">=</span> <span class="dv">8</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb4-362"><a href="#cb4-362" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""(Private) Prepares a DataFrame for interactive plotting."""</span></span>
+<span id="cb4-363"><a href="#cb4-363" aria-hidden="true" tabindex="-1"></a>        embedding <span class="op">=</span> <span class="va">self</span>.embeddings_[fit_index]</span>
+<span id="cb4-364"><a href="#cb4-364" aria-hidden="true" tabindex="-1"></a>        jacobxall <span class="op">=</span> <span class="va">self</span>.feature_contributions_[fit_index]</span>
+<span id="cb4-365"><a href="#cb4-365" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-366"><a href="#cb4-366" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> pd.DataFrame(embedding, columns<span class="op">=</span>[<span class="st">'UMAP 0'</span>, <span class="st">'UMAP 1'</span>])</span>
+<span id="cb4-367"><a href="#cb4-367" aria-hidden="true" tabindex="-1"></a>        df[groupby] <span class="op">=</span> adata.obs[groupby].values</span>
+<span id="cb4-368"><a href="#cb4-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-369"><a href="#cb4-369" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calculate squared distance and find top contributing genes</span></span>
+<span id="cb4-370"><a href="#cb4-370" aria-hidden="true" tabindex="-1"></a>        gene_dist_sq <span class="op">=</span> jacobxall[:, <span class="dv">0</span>, :]<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> jacobxall[:, <span class="dv">1</span>, :]<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb4-371"><a href="#cb4-371" aria-hidden="true" tabindex="-1"></a>        genes <span class="op">=</span> adata.var.index.values</span>
+<span id="cb4-372"><a href="#cb4-372" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-373"><a href="#cb4-373" aria-hidden="true" tabindex="-1"></a>        top_gene_indices <span class="op">=</span> np.argsort(gene_dist_sq, axis<span class="op">=</span><span class="dv">1</span>)[:, ::<span class="op">-</span><span class="dv">1</span>][:, :top_n_genes]</span>
+<span id="cb4-374"><a href="#cb4-374" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-375"><a href="#cb4-375" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(top_n_genes):</span>
+<span id="cb4-376"><a href="#cb4-376" aria-hidden="true" tabindex="-1"></a>            df[<span class="ss">f'gene_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span>] <span class="op">=</span> genes[top_gene_indices[:, i]]</span>
+<span id="cb4-377"><a href="#cb4-377" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-378"><a href="#cb4-378" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div id="e02e7e3c" class="cell" data-execution_count="5">
@@ -2430,7 +2438,7 @@ Figure&nbsp;1: The conventional ScanPy (v1.11.4) UMAP and the PyTorch (v2.9.0) n
 <div aria-describedby="fig-reconstruction-validation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-reconstruction-validation" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-reconstruction-validation-1" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent." data-fig-align="center">
+<div id="fig-reconstruction-validation-1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent.">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-reconstruction-validation-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="index_files/figure-html/fig-reconstruction-validation-output-1.png" class="quarto-figure quarto-figure-center figure-img" data-ref-parent="fig-reconstruction-validation" alt="Plot of the Jacobian reconstruction of the UMAP embedding positions as a function of the actual UMAP embedding positions, falling on the identity line, showing they are equivalent." width="379" height="365">
@@ -2442,7 +2450,7 @@ Figure&nbsp;1: The conventional ScanPy (v1.11.4) UMAP and the PyTorch (v2.9.0) n
 </div>
 </div>
 <div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-reconstruction-validation" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-reconstruction-validation-2" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14." data-fig-align="center">
+<div id="fig-reconstruction-validation-2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14.">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-reconstruction-validation-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="index_files/figure-html/fig-reconstruction-validation-output-2.png" class="quarto-figure quarto-figure-center figure-img" data-ref-parent="fig-reconstruction-validation" alt="Histogram of the reconstruction error for the points from the reconstruction plot, showing very low error with a maximum absolute value of 3e-14." width="369" height="364">
@@ -2479,7 +2487,7 @@ Figure&nbsp;2: Jacobian reconstruction. To validate that the Jacobian reconstruc
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    summary_file<span class="op">=</span>summary_interactive_file <span class="cf">if</span> <span class="kw">not</span> TRAIN <span class="cf">else</span> <span class="va">None</span></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div id="cell-fig-umap-hover-top-genes" class="cell quarto-layout-panel" aria-label="Interactive plotly plot of the PyTorch (v2.9.0) UMAP embedding colored by cell type, where hover tips show the top gene features." data-layout-ncol="1" data-execution_count="11">
+<div id="cell-fig-umap-hover-top-genes" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="11" aria-label="Interactive plotly plot of the PyTorch (v2.9.0) UMAP embedding colored by cell type, where hover tips show the top gene features.">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-umap-hover-top-genes" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
@@ -2536,7 +2544,7 @@ Figure&nbsp;3: The PyTorch (v2.9.0) UMAP embedding colored by cell type with top
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    summary_file<span class="op">=</span>summary_interactive_file <span class="cf">if</span> <span class="kw">not</span> TRAIN <span class="cf">else</span> <span class="va">None</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div id="cell-fig-umap-plot-genes" class="cell quarto-layout-panel" aria-label="Interactive plotly plot of the PyTorch (v2.9.0) UMAP embedding colored by top gene features." data-layout-ncol="1" data-execution_count="12">
+<div id="cell-fig-umap-plot-genes" class="cell quarto-layout-panel" data-layout-ncol="1" data-execution_count="12" aria-label="Interactive plotly plot of the PyTorch (v2.9.0) UMAP embedding colored by top gene features.">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-umap-plot-genes" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
